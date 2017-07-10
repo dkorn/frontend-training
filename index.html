@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script type='text/javascript' src="todo.js"></script>
   <link rel="stylesheet" type="text/css" href="style.css">
-  <title>AngularJS • TodoMVC</title>
+  <title>VanillaJS • TodoMVC</title>
 </head>
 <body>
-  <div class="main">
-    <div class="container">
-      <div class="header">todos</div>
-      <div class="todo-form">
-        <input class="new-todo" type="text" placeholder="What needs to be done?">
-      </div>
+  <div class="container">
+    <div class="header">todos</div>
+    <div class="todo-form">
+      <input id="new-todo" class="new-todo" type="text" placeholder="What needs to be done?">
     </div>
+  </div>
+  <div class="main">
+    <ul id="todo-list" class="todo-list">
+    </ul>
   </div>
 </body>
 </html>
