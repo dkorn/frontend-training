@@ -2,7 +2,7 @@ const todos = [];
 const completed = [];
 
 window.onload = () => {
-  handleFooter(todos);
+  handleFooter(todos, completed);
   document.getElementById('new-todo').addEventListener('keypress', (e) => {
       const key = e.which || e.keyCode;
       const todoInput = e.currentTarget;
@@ -12,7 +12,7 @@ window.onload = () => {
         createTodoElement(todo);
         todos.push(todo);
         todoInput.value = '';
-        handleFooter(todos);
+        handleFooter(todos, completed);
       }
   });
 };
@@ -27,7 +27,7 @@ function handleRemove (e, todos, completed) {
   const removeText = element.previousSibling.textContent;
   element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
   element.checked ? remove(completed, removeText) : remove(todos, removeText);
-  handleFooter(todos);
+  handleFooter(todos, completed);
 }
 
 function handleCheck (addTo, removeFrom, item) {
@@ -35,8 +35,8 @@ function handleCheck (addTo, removeFrom, item) {
   remove(removeFrom, item);
 }
 
-function handleFooter (todoList) {
-  const className = todoList.length > 0 ? 'footer' : 'footer hide';
+function handleFooter (todoList, completedList) {
+  const className = todoList.length > 0 || completedList.length > 0 ? 'footer' : 'footer hide';
   document.getElementById('footer').setAttribute('class', className);
   document.getElementById('summary-text').innerHTML = todoList.length + ' items left';
 }
@@ -56,7 +56,7 @@ function createTodoElement(newTodo) {
   todoCheckbox.addEventListener('click', (e) => {
     const text = e.currentTarget.nextSibling.textContent;
     e.currentTarget.checked ? handleCheck(completed, todos, text) : handleCheck(todos, completed, text);
-    handleFooter(todos);
+    handleFooter(todos, completed);
   });
 
   todoText.appendChild(document.createTextNode(newTodo));
