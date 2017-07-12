@@ -1,8 +1,7 @@
-const todos = [];
-const completed = [];
+let todos = [];
 
 window.onload = () => {
-  handleFooter(todos, completed);
+  handleFooter();
   document.getElementById('new-todo').addEventListener('keypress', (e) => {
       const key = e.which || e.keyCode;
       const todoInput = e.currentTarget;
@@ -10,35 +9,67 @@ window.onload = () => {
       if (key === 13 && !/^\s*$/.test(todo)) { // 13 is enter
         e.preventDefault();
         createTodoElement(todo);
-        todos.push(todo);
+        todos.push({'task': todo, 'completed': false});
         todoInput.value = '';
-        handleFooter(todos, completed);
+        handleFooter();
       }
   });
 };
 
-function remove (array, item) {
-  const index = array.indexOf(item);
-  array.splice(index, 1);
+function removeTask (task) {
+  todos = todos.filter(function(todo) {
+    return todo.task !== task;
+  });
 }
 
-function handleRemove (e, todos, completed) {
+function handleRemove (e) {
   const element = e.currentTarget;
-  const removeText = element.previousSibling.textContent;
+  const removedText = element.previousSibling.textContent;
   element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
-  element.checked ? remove(completed, removeText) : remove(todos, removeText);
-  handleFooter(todos, completed);
+  removeTask(removedText);
+  handleFooter();
 }
 
-function handleCheck (addTo, removeFrom, item) {
-  addTo.push(item);
-  remove(removeFrom, item);
+function anyCompleted () {
+  const completed = todos.filter(function (todo) {
+    return todo.completed;
+  });
+
+  return completed.length > 0;
 }
 
-function handleFooter (todoList, completedList) {
-  const className = todoList.length > 0 || completedList.length > 0 ? 'footer' : 'footer hide';
+function removeCompleted () {
+  // remove completed li elements
+  const liElements = document.getElementById("todo-list").getElementsByTagName("li");
+  let toRemove = [];
+  for (let i = 0; i < liElements.length; i++) {
+    if (liElements[i].children[0].children[0].checked) {
+      toRemove.push(liElements[i]);
+    }
+  };
+  toRemove.forEach(function (e) {
+    e.remove()
+  });
+
+  // remove completed from todos array
+  todos = todos.filter(function (todo) {
+    return !todo.completed;
+  });
+  handleFooter();
+}
+
+function handleFooter () {
+  const className = todos.length > 0 ? 'footer' : 'footer hide';
+  const clearCompletedClass = anyCompleted() ? 'clear-completed' : 'clear-completed hide';
+  const clearCompleted = document.getElementById('clear-completed');
+
   document.getElementById('footer').setAttribute('class', className);
-  document.getElementById('summary-text').innerHTML = todoList.length + ' items left';
+  document.getElementById('summary-text').innerHTML = todos.length + ' items left';
+
+  clearCompleted.setAttribute('class', clearCompletedClass);
+  clearCompleted.onclick = function () {
+    removeCompleted();
+  };
 }
 
 function createTodoElement(newTodo) {
@@ -55,8 +86,9 @@ function createTodoElement(newTodo) {
   todoCheckbox.type = 'checkbox';
   todoCheckbox.addEventListener('click', (e) => {
     const text = e.currentTarget.nextSibling.textContent;
-    e.currentTarget.checked ? handleCheck(completed, todos, text) : handleCheck(todos, completed, text);
-    handleFooter(todos, completed);
+    let index = todos.findIndex((x) => (x.task === text));
+    todos[index].completed = !todos[index].completed;
+    handleFooter();
   });
 
   todoText.appendChild(document.createTextNode(newTodo));
@@ -66,7 +98,7 @@ function createTodoElement(newTodo) {
   todoRemove.type = 'button';
   todoRemove.value = 'X';
   todoRemove.addEventListener('click', (e) => {
-    handleRemove(e, todos, completed);
+    handleRemove(e);
   });
 
   newLI.appendChild(todoContainer);
