@@ -62,9 +62,12 @@ function handleFooter () {
   const className = todos.length > 0 ? 'footer' : 'footer hide';
   const clearCompletedClass = anyCompleted() ? 'clear-completed' : 'clear-completed hide';
   const clearCompleted = document.getElementById('clear-completed');
+  const tasksLeft = todos.filter(function (todo) {
+    return !todo.completed;
+  });
 
   document.getElementById('footer').setAttribute('class', className);
-  document.getElementById('summary-text').innerHTML = todos.length + ' items left';
+  document.getElementById('summary-text').innerHTML = tasksLeft.length + ' items left';
 
   clearCompleted.setAttribute('class', clearCompletedClass);
   clearCompleted.onclick = function () {
