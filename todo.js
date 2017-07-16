@@ -14,6 +14,20 @@ window.onload = () => {
         handleFooter();
       }
   });
+  const toggleAll = document.getElementById('toggle-all');
+  toggleAll.addEventListener('click', (e) => {
+    const check = toggleAll.checked ? true : false;
+    const liElements = document.getElementById("todo-list").getElementsByTagName("li");
+    for (let i = 0; i < liElements.length; i++) {
+      if (liElements[i].children[0].children[0].checked !== check) {
+        const text = liElements[i].children[0].children[1].textContent;
+        let index = todos.findIndex((x) => (x.task === text));
+        todos[index].completed = !todos[index].completed;
+        liElements[i].children[0].children[0].checked = check;
+      }
+    }
+    handleFooter();
+  });
 };
 
 function removeTask (task) {
