@@ -12,9 +12,12 @@ window.onload = () => {
         todos.push({'task': todo, 'completed': false});
         todoInput.value = '';
         handleFooter();
+        handleToggle();
       }
   });
   const toggleAll = document.getElementById('toggle-all');
+  const toggleClassName = todos.length > 0 ? 'toggle-all' : 'toggle-all hide';
+  toggleAll.setAttribute('class', toggleClassName);
   toggleAll.addEventListener('click', (e) => {
     const check = toggleAll.checked ? true : false;
     const liElements = document.getElementById("todo-list").getElementsByTagName("li");
@@ -36,11 +39,22 @@ function removeTask (task) {
   });
 }
 
+function handleToggle () {
+  const toggleAll = document.getElementById('toggle-all');
+  let toggleClassName = 'toggle-all';
+  if (todos.length === 0) {
+    toggleClassName = 'toggle-all hide';
+    toggleAll.checked = false;
+  }
+  toggleAll.setAttribute('class', toggleClassName);
+}
+
 function handleRemove (e) {
   const element = e.currentTarget;
   const removedText = element.previousSibling.textContent;
   element.parentNode.parentNode.parentNode.removeChild(element.parentNode.parentNode);
   removeTask(removedText);
+  handleToggle();
   handleFooter();
 }
 
@@ -69,6 +83,7 @@ function removeCompleted () {
   todos = todos.filter(function (todo) {
     return !todo.completed;
   });
+  handleToggle();
   handleFooter();
 }
 

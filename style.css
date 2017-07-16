@@ -61,6 +61,14 @@ body {
   align-items: center;
 }
 
+.toggle-all {
+  display: flex;
+}
+
+.toggle-all.hide {
+  display: none;
+}
+
 .new-todo {
   width: 100%;
   padding: 16px 16px 16px 25px;
