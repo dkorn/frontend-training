@@ -91,6 +91,7 @@ function handleFooter () {
   const className = todos.length > 0 ? 'footer' : 'footer hide';
   const clearCompletedClass = anyCompleted() ? 'clear-completed' : 'clear-completed hide';
   const clearCompleted = document.getElementById('clear-completed');
+  const filterButtons = Array.from(document.getElementsByClassName('all-button'));
   const tasksLeft = todos.filter(function (todo) {
     return !todo.completed;
   });
@@ -98,13 +99,33 @@ function handleFooter () {
   document.getElementById('footer').setAttribute('class', className);
   document.getElementById('summary-text').innerHTML = tasksLeft.length + ' items left';
 
+  filterButtons.forEach((button) => button.onclick = (e) => {
+    filterButtons.forEach((fb) => fb.setAttribute('class', 'all-button'));
+    e.currentTarget.setAttribute('class', 'all-button active');
+    filterTasks(e.currentTarget);
+  });
+
   clearCompleted.setAttribute('class', clearCompletedClass);
   clearCompleted.onclick = function () {
     removeCompleted();
   };
 }
 
-function createTodoElement(newTodo) {
+function filterTasks (element) {
+  const liElements = Array.from(document.getElementById("todo-list").getElementsByTagName("li"));
+  liElements.forEach((li) => {
+    let checked = li.querySelector('.todo-checkbox').checked;
+    let className = '';
+    if (element.id === 'active-button') {
+      className = checked ? 'hide' : '';
+    } else if (element.id === 'completed-button') {
+      className = checked ? '' : 'hide';
+    }
+    li.setAttribute('class', className);
+  });
+}
+
+function createTodoElement (newTodo) {
   const newLI = document.createElement('li');
   const todoCheckbox = document.createElement('input');
   const todoContainer = document.createElement('div');

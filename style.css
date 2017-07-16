@@ -38,6 +38,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.todo-list li.hide {
+  display: none;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -123,6 +127,31 @@ body {
   font-weight: 300;
   outline: none;
   cursor: pointer;
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.all-button {
+  border: none;
+  background: none;
+  color: #777;
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  outline: none;
+  cursor: pointer;
+}
+
+.all-button:hover {
+  border: 5px solid red;
+  border-color: rgba(175, 47, 47, 0.1);
+}
+
+.all-button.active {
+  border: 5px solid red;
+  border-color: rgba(175, 47, 47, 0.2);
 }
 
 .clear-completed:hover {
