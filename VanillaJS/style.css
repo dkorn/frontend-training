@@ -67,6 +67,7 @@ body {
 
 .toggle-all {
   display: flex;
+  content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" stroke="#ededed" stroke-width="3"/></svg>');
 }
 
 .toggle-all.hide {
@@ -75,9 +76,9 @@ body {
 
 .new-todo {
   width: 100%;
-  padding: 16px 16px 16px 25px;
+  padding: 16px 16px 16px 60px;
   box-sizing: border-box;
-  font-weight: 100;
+  font-weight: 300;
   font-family: inherit;
   font-size: 24px;
   color: #4d4d4d;
